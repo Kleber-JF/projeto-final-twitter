@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pftwitter"
+version = "0.1.0"
+description = ""
+authors = ["Kleber Fukushima <kleber.jhun@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^5.0.2"
+djangorestframework = "^3.14.0"
+factory-boy = "^3.3.0"
+Faker = "^23.2.1"
+pytest = "^8.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
