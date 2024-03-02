@@ -4,7 +4,7 @@
     <div class="container text-center">
         <div class="row">
             <div class="col-8">
-                <h1>Generic Tweet!</h1>
+                <h1>Manda um Zap!</h1>
                 <br />
                 {% if meeps %}
                     {% for meep in meeps %}
@@ -65,7 +65,7 @@
                 <form method=POST>
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-secondary">Post Meep!</button>
+                    <button type="submit" class="btn btn-secondary">Postar Zap!</button>
                 </form>
                 {% endif %}
             </div>

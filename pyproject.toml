@@ -6,7 +6,7 @@ authors = ["Kleber Fukushima <kleber.jhun@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 Django = "^5.0.2"
 django-rest-framework = "^0.1.0"
 pytest-django = "^4.8.0"
