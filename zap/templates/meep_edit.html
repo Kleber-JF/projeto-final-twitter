@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-8">
+                <h1>Editing meep</h1>
+                <br />
+                <div class="alert alert-dark" role="alert">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                {% if meep.user.profile.profile_image %}
+                                <img src="{{ meep.user.profile.profile_image.url }}"
+                                     class="img-fluid rounded-circle object-fit-cover"
+                                     style="width: 50px; height: 50px;"
+                                     alt="{{ meep.user.profile.user.username }}">
+                                {% else %}
+                                <img src="{% static 'images/blank-profile-picture.png' %}"
+                                     class="img-fluid rounded-circle object-fit-cover"
+                                     style="width: 50px; height: 50px;"
+                                     alt="{{ meep.user.profile.user.username }}">
+                                {% endif %}
+                            </div>
+                            <div class="col-10">
+                                {{ meep.body }}
+                            <br/>
+                            <small class="text-muted">
+                               ({{ meep.created_at }}) By
+                                @{{ meep.user.username }} - {{ meep.number_of_likes }}
+                                {% if request.user in meep.likes.all %}
+                                    <a href="{% url 'meep_like' meep.id %}" style="text-decoration: none;">
+                                        <i class="fa-solid fa-heart" style="color: red;"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'meep_like' meep.id %}" style="text-decoration: none;">
+                                        <i class="fa fa-heart-o" style="color: red;"></i>
+                                    </a>
+                                {% endif %}
+                            </small>
+                            </div>
+                            <br/>
+                         </div>
+                    </div>
+                </div>
+                {% if form %}
+                    <form method=POST>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-secondary">Edit Meep!</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

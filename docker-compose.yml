@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=pftwitter_dev_db
+      - POSTGRES_USER=pftwitter_dev
+      - POSTGRES_PASSWORD=pftwitter_dev
+    networks:
+      - backend
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - app_data:/usr/src/app/
+    ports:
+      - 8000:8000
+    env_file:
+      - ./env.dev
+    networks:
+      - backend
+    depends_on:
+      - db
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  app_data:
