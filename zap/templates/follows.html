@@ -1,56 +1,57 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h1>{{ request.user.username }}'s follow list</h1>
+<div class="container-fluid text-center">
+    <h1>Quem @{{ request.user.username|lower }} segue</h1>
 <br/>
 {% if profiles %}
     {% for profile in profiles.follows.all %}
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row g-0 ">
-                {% if profile.profile_image %}
-                    <div class="col-md-4">
-                        <img src="{{ profile.profile_image.url }}"
-                             class="img-fluid rounded-start object-fit-cover"
-                             style="width: 200px; height: 200px" alt="{{ profile.user.username }}">
-                    </div>
-                {% else %}
-                    <div class="col-md-4">
-                        <img src="{% static 'images/blank-profile-picture.png' %}"
-                             class="img-fluid rounded-start" alt="Profile image">
-                    </div>
-                {% endif %}
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            {{ profile.user.username }}
-                            {% if profile in profiles.followed_by.all %}
-                                <a href="{% url 'unfollow' profile.user.id %}">
-                                    <i class="fa fa-user-minus" aria-hidden="true" style="color: red;"></i>
-                                </a>
-                                <br/>
-                            {% else %}
-                                <a href="{% url 'follow' profile.user.id %}">
-                                    <i class="fa fa-user-plus" aria-hidden="true" style="color: green;"></i>
-                                </a>
-                                <br/>
-                            {% endif %}
-                        </h5>
-                        <p class="card-text">
-                            <a href="{% url 'profile' profile.user.id %}">
-                                @{{ profile.user.username|lower }}
-                            </a>
-                        </p>
-                        <br/><br/>
-                        <p class="card-text">
-                            <small class="text-body-secondary">
-                                Last updated: {{ profile.date_modified }}
-                            </small>
-                        </p>
-                    </div>
+    {% if profile.user.id != request.user.id %}
+        <div class="row col-12 border rounded m-auto flex-column flex-sm-row">
+            {% if profile.profile_image %}
+                <div class="col-4 m-auto m-md-0 w-auto" style="max-width: 200px; max-height: 200px; padding: 0;">
+                    <img src="{{ profile.profile_image.url }}"
+                         class="rounded-sm-start float-start object-fit-cover"
+                         style="width: 200px; height: 200px" alt="{{ profile.user.username }}">
                 </div>
+            {% else %}
+                <div class="col-4 m-auto m-md-0 w-auto" style="max-width: 200px; max-height: 200px; padding: 0;">
+                    <img src="{% static 'images/blank-profile-picture.png' %}"
+                         class="rounded-sm-start float-start"
+                         style="width: 200px; height: 200px" alt="Profile image">
+                </div>
+            {% endif %}
+            <div class="col-md-8 m-auto">
+                <h5 class="card-title">
+                    {{ profile.user.username }}
+                    {% if profile in profiles.followed_by.all %}
+                        <a href="{% url 'unfollow' profile.user.id %}">
+                            <i class="fa fa-user-minus" aria-hidden="true" style="color: red;"></i>
+                        </a>
+                        <br/>
+                    {% else %}
+                        <a href="{% url 'follow' profile.user.id %}">
+                            <i class="fa fa-user-plus" aria-hidden="true" style="color: green;"></i>
+                        </a>
+                        <br/>
+                    {% endif %}
+                </h5>
+                <p class="card-text">
+                    <a href="{% url 'profile' profile.user.id %}">
+                        @{{ profile.user.username|lower }}
+                    </a>
+                </p>
+                <br/><br/>
+                <p class="card-text">
+                    <small class="text-body-secondary">
+                        Last updated: {{ profile.date_modified }}
+                    </small>
+                </p>
             </div>
         </div>
         <br/><br/>
+    {% endif %}
     {% endfor %}
 {% endif %}
+</div>
 {% endblock %}
