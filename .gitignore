@@ -17,6 +17,7 @@ media/
 
 # Static files
 static/
+staticfiles/
 
 # Compiled Python files
 *.pyo
