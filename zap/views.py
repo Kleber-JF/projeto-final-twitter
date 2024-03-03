@@ -36,7 +36,7 @@ def profile_list(request):
 def profile(request, pk):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user_id=pk)
-        meeps = Meep.objects.filter(user_id=pk).order_by('-created_at')
+        zaps = Meep.objects.filter(user_id=pk).order_by('-created_at')
 
         if request.method == 'POST':
             # get current user
@@ -48,7 +48,7 @@ def profile(request, pk):
                 current_user_profile.follows.remove(profile)
             elif action == 'follow':
                 current_user_profile.follows.add(profile)
-        return render(request, 'profile.html', {'profile': profile, 'meeps': meeps})
+        return render(request, 'profile.html', {'profile': profile, 'meeps': zaps})
     else:
         messages.success(request, 'You must be logged in to access this page')
         return redirect('home')

@@ -6,7 +6,7 @@
     <div class="container text-center">
         <div class="row">
             <div class="col-8">
-                <h1>{{ profile.user.username }}'s Profile</h1>
+                <h1>Perfil de {{ profile.user.username }}</h1>
                 <br /><br />
                 {% if meeps %}
                     {% for meep in meeps %}
@@ -107,70 +107,80 @@
                 <br/><br/>
                 <div class="card">
                     <div class="card-header">
-                        Follows:
+                        Seguindo:
                     </div>
                     <div class="card-body">
-                        <p class="card-text">
+                        <ul class="m-auto p-0" style="list-style: none;">
                             {% for following in profile.follows.all|slice:3 %}
-                            <!--Maybe there is a way to reutilize follow/unfollow from profile pages-->
-                            <a href="{% url 'profile' following.user.id %}">@{{ following }}</a>&nbsp;
-                            <a href="{% url 'unfollow' following.user.id %}">
-                                <i class="fa fa-user-minus" aria-hidden="true" style="color: red;"></i>
-                            </a>
-                            <br/>
+                            {% if following.user.id != profile.user.id %}
+                            <li class="card-text">
+                                <a href="{% url 'profile' following.user.id %}">@{{ following }}</a>&nbsp;
+                                {% if following in profile.follows.all and request.user.id == profile.user.id %}
+                                <a href="{% url 'unfollow' following.user.id %}">
+                                    <i class="fa fa-user-minus" aria-hidden="true" style="color: red;"></i>
+                                </a>
+                                {% elif request.user.id == profile.user.id %}
+                                <a href="{% url 'follow' following.user.id %}">
+                                    <i class="fa fa-user-plus" aria-hidden="true" style="color: green;"></i>
+                                </a>
+                                {% endif %}
+                                {% endif %}
+                             </li>
                             {% endfor %}
-                        </p>
+                        </ul>
                     </div>
                     <div class="card-footer">
                         <a href="{% url 'follows' profile.user.id %}"
                            class="btn btn-sm btn-outline-secondary">
-                            All follows
+                            Ver todos
                         </a>
                     </div>
                 </div>
                 <br /><br />
                 <div class="card">
                     <div class="card-header">
-                        Followed by:
+                        Seguidores:
                     </div>
                     <div class="card-body">
-                        <p class="card-text">
+                        <ul class="m-auto p-0" style="list-style: none;">
                             {% for following in profile.followed_by.all|slice:3 %}
-                            <a href="{% url 'profile' following.user.id %}">@{{ following }}</a>&nbsp;
-                            {% if following in profile.follows.all %}
-                            <a href="{% url 'unfollow' following.user.id %}">
-                                <i class="fa fa-user-minus" aria-hidden="true" style="color: red;"></i>
-                            </a>
-                            <br/>
-                            {% else %}
-                            <a href="{% url 'follow' following.user.id %}">
-                                <i class="fa fa-user-plus" aria-hidden="true" style="color: green;"></i>
-                            </a>
-                            <br/>
-                            {% endif %}
+                            {% if following.user.id != profile.user.id %}
+                            <li class="card-text">
+                                <a href="{% url 'profile' following.user.id %}">@{{ following }}</a>&nbsp;
+                                {% if following in profile.follows.all and request.user.id == profile.user.id %}
+                                <a href="{% url 'unfollow' following.user.id %}">
+                                    <i class="fa fa-user-minus" aria-hidden="true" style="color: red;"></i>
+                                </a>
+                                {% elif request.user.id == profile.user.id %}
+                                <a href="{% url 'follow' following.user.id %}">
+                                    <i class="fa fa-user-plus" aria-hidden="true" style="color: green;"></i>
+                                </a>
+                                {% endif %}
+                                {% endif %}
+                             </li>
                             {% endfor %}
-                        </p>
+                        </ul>
                     </div>
                     <div class="card-footer">
                         <a href="{% url 'followers' profile.user.id %}"
                            class="btn btn-sm btn-outline-secondary">
-                            All followers
+                            Ver todos
                         </a>
                     </div>
                 </div>
                 <br />
                 <form method=POST>
                     {% csrf_token %}
-                    {% if profile in user.profile.follows.all %}
+                    {% if profile in user.profile.follows.all and request.user.id != profile.user.id %}
                         <button class="btn btn-outline-danger" name="follow"
                                 value="unfollow" type="submit">
                             Unfollow @{{ profile.user.username|lower }}
                         </button>
-                    {% else %}
-                        <button class="btn btn-outline-success" name="follow"
-                                value="follow" type="submit">
-                            Follow @{{ profile.user.username|lower }}
-                        </button>
+                    {% elif request.user.id != profile.user.id %}
+                            <button class="btn btn-outline-success" name="follow"
+                                    value="follow" type="submit">
+                                Follow @{{ profile.user.username|lower }}
+                            </button>
                     {% endif %}
                 </form>
                 <br/>

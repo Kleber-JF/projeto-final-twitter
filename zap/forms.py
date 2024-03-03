@@ -7,15 +7,20 @@ from .models import Meep, Profile
 class ProfilePicForm(forms.ModelForm):
     profile_image = forms.ImageField(label='Profile picture')
     profile_bio = forms.CharField(label='', required=False,
-                             widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Write your bio here'}))
+                             widget=forms.Textarea(attrs={'class': 'form-control',
+                                                          'placeholder': 'Write your bio here'}))
     homepage_link = forms.CharField(label='', required=False,
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Website link'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control',
+                                                           'placeholder': 'Website link'}))
     facebook_link = forms.CharField(label='', required=False,
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Facebook link'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control',
+                                                           'placeholder': 'Facebook link'}))
     instagram_link = forms.CharField(label='', required=False,
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Instagram link'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control',
+                                                           'placeholder': 'Instagram link'}))
     linkedin_link = forms.CharField(label='', required=False,
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Linkedin link'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control',
+                                                           'placeholder': 'Linkedin link'}))
 
     class Meta:
         model = Profile
@@ -26,8 +31,10 @@ class MeepForm(forms.ModelForm):
     body = forms.CharField(required=True,
                            widget=forms.widgets.Textarea(
                                attrs={
-                                   'placeholder':'Enter your Social Meep!',
+                                   'placeholder':'Escreva seu Zap aqui!',
                                    'class':'form-control',
+                                   'style': 'resize: none;',
+                                   'rows':6,
                                }
                                ),
                                label='',

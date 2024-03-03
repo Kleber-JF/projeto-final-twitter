@@ -3,9 +3,19 @@
 {% block content %}
     <div class="container text-center">
         <div class="row">
-            <div class="col-8">
+            <div class="col-8 m-auto">
                 <h1>Manda um Zap!</h1>
                 <br />
+                <div class="col-8 m-auto">
+                <br /><br /><br />
+                {% if form %}
+                <form method=POST>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-secondary">Postar Zap!</button>
+                </form><br/>
+                {% endif %}
+            </div>
                 {% if meeps %}
                     {% for meep in meeps %}
                         <div class="alert alert-dark" role="alert">
@@ -57,16 +67,6 @@
                             </div>
                         </div>
                     {% endfor %}
-                {% endif %}
-            </div>
-            <div class="col-4">
-                <br /><br /><br />
-                {% if form %}
-                <form method=POST>
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-secondary">Postar Zap!</button>
-                </form>
                 {% endif %}
             </div>
         </div>
