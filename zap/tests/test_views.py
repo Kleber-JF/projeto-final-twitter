@@ -102,7 +102,7 @@ class MeepViewsTestCase(TestCase):
         self.assertEqual(Meep.objects.filter(id=self.meep.id).exists(), False)
         self.assertRedirects(response, redirect_url)
         messages = [m.message for m in get_messages(response.wsgi_request)]
-        self.assertIn('Meep successfully deleted', messages)
+        self.assertIn('Zap deletado com sucesso!', messages)
 
     def test_meep_edit_view_authenticated_user(self):
         meep = MeepFactory(user=self.user1)
