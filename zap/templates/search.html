@@ -1,67 +1,73 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
+<div class="container text-center" style="max-width: 1024px;">
     <h1>Search</h1>
     <br />
-    <form method=POST>
+    <form class="d-flex" method=POST>
         {% csrf_token %}
-        <input class="form-control" placeholder="Search meeps" name="search">
-        <br/><br/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input class="form-control me-2" placeholder="Digite um termo para procurar." name="search">
+        <button class="btn btn-outline-success" type="submit">Procurar</button>
     </form>
     <br/><br/>
-{% if search %}
-You searched for: {{ search }}
-{% for meep in searched_term %}
-<div class="alert alert-dark" role="alert">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-2">
-                                        {% if meep.user.profile.profile_image %}
-                                        <img src="{{ meep.user.profile.profile_image.url }}"
-                                             class="img-fluid rounded-circle object-fit-cover"
-                                             style="width: 50px; height: 50px;"
-                                             alt="{{ meep.user.profile.user.username }}">
-                                        {% else %}
-                                        <img src="{% static 'images/blank-profile-picture.png' %}"
-                                             class="img-fluid rounded-circle object-fit-cover"
-                                             style="width: 50px; height: 50px;"
-                                             alt="{{ meep.user.profile.user.username }}">
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-10">
-                                        {{ meep.body }}
-                                    <br/>
-                                    <small class="text-muted">
-                                       ({{ meep.created_at }}) By
-                                        @{{ meep.user.username }} - {{ meep.number_of_likes }}
-                                        {% if request.user in meep.likes.all %}
-                                            <a href="{% url 'meep_like' meep.id %}" style="text-decoration: none;">
-                                                <i class="fa-solid fa-heart" style="color: red;"></i>
-                                            </a>&nbsp;
-                                        {% else %}
-                                            <a href="{% url 'meep_like' meep.id %}"  style="text-decoration: none;">
-                                                <i class="fa fa-heart-o" style="color: red;"></i>
-                                            </a>&nbsp;
-                                        {% endif %}
-                                            <a href="{% url 'meep_show' meep.id %}" style="text-decoration: none;">
-                                                <i class="fa fa-share" style="color: gray;"></i>
-                                            </a>&nbsp;
-                                        {% if meep.user.id == request.user.id %}
-                                         <a href="{% url 'meep_delete' meep.id %}" style="text-decoration: none;">
-                                             <i class="fas fa-trash-alt" style="color: gray;"></i>
-                                         </a>&nbsp;
-                                         <a href="{% url 'meep_edit' meep.id %}" style="text-decoration: none;">
-                                             <i class="fas fa-edit" style="color: gray;"></i>
-                                         </a>&nbsp;
-                                         {% endif %}
-                                    </small>
-                                    </div>
-                                    <br/>
-                                 </div>
-                            </div>
-                        </div>
-{% endfor %}
-{% endif %}
+    {% if search %}
+    <span>Você procurou por:<strong> {{ search }}</strong></span>
+    {% for meep in searched_term %}
+    <div class="alert alert-dark mt-3" role="alert">
+        <div class="container">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-2 w-100" style="max-width: 80px; padding: 0;">
+                    {% if meep.user.profile.profile_image %}
+                    <a href="{% url 'profile' meep.user.id %}">
+                        <img src="{{ meep.user.profile.profile_image.url }}"
+                        class="img-thumbnail rounded-circle object-fit-cover"
+                        style="width: 80px; height: 80px;"
+                        alt="{{ meep.user.profile.user.username }}">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'profile' meep.user.id %}">
+                    <img src="{% static 'images/blank-profile-picture.png' %}"
+                        class="img-thumbnail rounded-circle object-fit-cover"
+                        style="width: 80px; height: 80px;"
+                        alt="{{ meep.user.profile.user.username }}">
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="col-10">
+                    <strong>{{ meep.body }}</strong>
+                <br/>
+                <small class="text-muted">
+                   ({{ meep.created_at|date:"d/m/Y H:i" }})
+                    By @{{ meep.user.username }}
+                    <br/>
+                    {{ meep.number_of_likes }}
+                    {% if request.user in meep.likes.all %}
+                        <a href="{% url 'meep_like' meep.id %}" style="text-decoration: none;">
+                            <i class="fa-solid fa-heart fa-lg" style="color: red;"></i>
+                        </a>&nbsp;
+                    {% else %}
+                        <a href="{% url 'meep_like' meep.id %}"  style="text-decoration: none;">
+                            <i class="fa fa-heart-o fa-lg" style="color: red;"></i>
+                        </a>&nbsp;
+                    {% endif %}
+                        <a href="{% url 'meep_show' meep.id %}" style="text-decoration: none;">
+                            <i class="fa fa-share fa-lg" style="color: gray;"></i>
+                        </a>&nbsp;
+                    {% if meep.user.id == request.user.id %}
+                     <a href="{% url 'meep_delete' meep.id %}" style="text-decoration: none;">
+                         <i class="fas fa-trash-alt fa-lg" style="color: gray;"></i>
+                     </a>&nbsp;
+                     <a href="{% url 'meep_edit' meep.id %}" style="text-decoration: none;">
+                         <i class="fas fa-edit fa-lg" style="color: gray;"></i>
+                     </a>&nbsp;
+                     {% endif %}
+                </small>
+                </div>
+                <br/>
+             </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}
