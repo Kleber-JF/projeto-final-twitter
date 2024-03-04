@@ -31,6 +31,10 @@ jobs:
               shell: bash
               run: python manage.py migrate
 
+            - name: Making staticfiles
+              shell: bash
+              run: python manage.py collectstatic
+
             - name: Test
               run: |
                 poetry run python manage.py test
