@@ -16,7 +16,7 @@ def home(request):
                 meep = form.save(commit=False)
                 meep.user = request.user
                 meep.save()
-                messages.success(request, 'Your meep has been posted')
+                messages.success(request, 'Seu Zap foi postado!')
                 return redirect('home')
 
         meeps = Meep.objects.all().order_by('-created_at')
@@ -29,7 +29,7 @@ def profile_list(request):
         profiles = Profile.objects.exclude(user=request.user)
         return render(request, 'profile_list.html', {'profiles': profiles})
     else:
-        messages.success(request, 'You must be logged in to access this page')
+        messages.success(request, 'Você precisa estar logado para acessar esta página')
         return redirect('home')
 
 
@@ -50,7 +50,7 @@ def profile(request, pk):
                 current_user_profile.follows.add(profile)
         return render(request, 'profile.html', {'profile': profile, 'meeps': zaps})
     else:
-        messages.success(request, 'You must be logged in to access this page')
+        messages.success(request, 'Você precisa estar logado para acessar esta página')
         return redirect('home')
 
 
@@ -60,10 +60,10 @@ def followers(request, pk):
             profiles = Profile.objects.get(user_id=pk)
             return render(request, 'followers.html', {'profiles': profiles})
         else:
-            messages.success(request, 'That\'s not your profile page.')
+            messages.success(request, 'Este não é seu perfil.')
             return redirect('home')
     else:
-        messages.success(request, 'You must be logged in to access this page')
+        messages.success(request, 'Você precisa estar logado para acessar esta página')
         return redirect('home')
 
 
@@ -73,10 +73,10 @@ def follows(request, pk):
             profiles = Profile.objects.get(user_id=pk)
             return render(request, 'follows.html', {'profiles': profiles})
         else:
-            messages.success(request, 'That\'s not your profile page.')
+            messages.success(request, 'Este não é seu perfil.')
             return redirect('home')
     else:
-        messages.success(request, 'You must be logged in to access this page')
+        messages.success(request, 'Você precisa estar logado para acessar esta página')
         return redirect('home')
 
 
@@ -87,10 +87,10 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'Login successful!')
+            messages.success(request, 'Login feito com sucesso! Bem vindo!')
             return redirect('home')
         else:
-            messages.success(request, 'Login failed...')
+            messages.success(request, 'O Login falhou...')
             return redirect('login')
     else:
         return render(request, 'login.html', {})
@@ -98,7 +98,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, 'Bye bye!')
+    messages.success(request, 'Você deslogou da página com sucesso! Volte em breve!')
     return redirect('home')
 
 
@@ -116,7 +116,7 @@ def register_user(request):
             # log in user
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, 'Welcome! You\'re now registered!')
+            messages.success(request, 'Bem vindo! Você foi registrado com sucesso!')
             return redirect('home')
 
     return render(request, 'register.html', {'form':form})
@@ -131,11 +131,11 @@ def update_user(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Your info has been updated')
+            messages.success(request, 'Suas informações foram atualizadas')
             return redirect('home')
         return render(request, 'update_user.html', {'user_form':user_form, 'profile_form':profile_form})
     else:
-        messages.success(request, 'you have to be logged in to access this page')
+        messages.success(request, 'Você precisa estar logado para acessar esta página')
         return redirect('home')
 
 
@@ -148,7 +148,7 @@ def meep_like(request, pk):
             meep.likes.add(request.user)
         return redirect(request.META.get('HTTP_REFERER'))
     else:
-        messages.success(request, 'you have to be logged in to access this page')
+        messages.success(request, 'Você precisa estar logado para acessar esta página')
         return redirect('home')
 
 
@@ -170,7 +170,7 @@ def unfollow(request, pk):
         messages.success(request, f'User unfollowed {unfollow_profile.user.username}')
         return redirect(request.META.get('HTTP_REFERER'))
     else:
-        messages.success(request, 'You must be logged in to do this.')
+        messages.success(request, 'Você precisa estar logado para realizar esta ação.')
         return redirect('home')
 
 
@@ -183,7 +183,7 @@ def follow(request, pk):
         messages.success(request, f'User unfollowed {follow_profile.user.username}')
         return redirect(request.META.get('HTTP_REFERER'))
     else:
-        messages.success(request, 'You must be logged in to do this.')
+        messages.success(request, 'Você precisa estar logado para realizar esta ação.')
         return redirect('home')
 
 
@@ -192,13 +192,13 @@ def meep_delete(request, pk):
         meep = get_object_or_404(Meep, id=pk)
         if meep.user.id == request.user.id:
             meep.delete()
-            messages.success(request, 'Meep successfully deleted')
+            messages.success(request, 'Zap deletado com sucesso!')
             return redirect(request.META.get('HTTP_REFERER'))
         else:
-            messages.success(request, 'This meep isn\'t yours!')
+            messages.success(request, 'Este Zap não é seu!')
             return redirect('home')
     else:
-        messages.success(request, 'You need to be logged in to do this')
+        messages.success(request, 'Você precisa estar logado para realizar esta ação')
         return redirect(request.META.get('HTTP_REFERER'))
 
 
@@ -214,14 +214,14 @@ def meep_edit(request, pk):
                     meep = form.save(commit=False)
                     meep.user = request.user
                     meep.save()
-                    messages.success(request, 'Your meep has been edited')
+                    messages.success(request, 'Seu Zap foi editado!')
                     return redirect('home')
             return render(request, 'meep_edit.html', {'form':form,'meep':meep})
         else:
-            messages.success(request, 'This meep isn\'t yours!')
+            messages.success(request, 'Este Zap não é seu!')
             return redirect('home')
     else:
-        messages.success(request, 'You need to be logged in to do this')
+        messages.success(request, 'Você precisa estar logado para realizar esta ação.')
         return redirect('home')
 
 

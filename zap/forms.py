@@ -32,7 +32,7 @@ class MeepForm(forms.ModelForm):
                            widget=forms.widgets.Textarea(
                                attrs={
                                    'placeholder':'Escreva seu Zap aqui!',
-                                   'class':'form-control',
+                                   'class':'form-control w-100',
                                    'style': 'resize: none;',
                                    'rows':6,
                                }
@@ -46,11 +46,11 @@ class MeepForm(forms.ModelForm):
 
 class SignUpForm(UserCreationForm):#UserCreationForm
     email = forms.EmailField(label='',
-                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'E-mail address'}))
+                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'E-mail'}))
     first_name = forms.CharField(label='', max_length=50,
-                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Primeiro nome'}))
     last_name = forms.CharField(label='', max_length=50,
-                                 widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
+                                 widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Sobrenome'}))
 
     class Meta:
         model= User
@@ -64,14 +64,26 @@ class SignUpForm(UserCreationForm):#UserCreationForm
         self.fields['username'].help_text = '<span class ="form-text text-muted"><small>Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small></span>'
 
         self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
+        self.fields['password1'].widget.attrs['placeholder'] = 'Senha'
         self.fields['password1'].label = ''
-        self.fields['password1'].help_text = '<ul class="form-text text-muted small"><li>Your password can\'t be too similar to other personal information.</li></ul>'
+        self.fields['password1'].help_text = \
+            ('<ul class="form-text text-muted small">'
+             '<li>'
+             'Sua senha não pode ser similar às suas informações pessoais.'
+             '</li>'
+             '<li>'
+             'Utilize uma combinação entre números e letras, no mínimo 8 dígitos.'
+             '</li>'
+             '</ul>')
 
         self.fields['password2'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
+        self.fields['password2'].widget.attrs['placeholder'] = 'Confirme Senha'
         self.fields['password2'].label = ''
-        self.fields['password2'].help_text = '<span class="form-text text-muted"><small>Enter the same password as before, for verification.</small></span>'
+        self.fields['password2'].help_text = ('<span class="form-text text-muted">'
+                                              '<small>'
+                                              'Digite sua senha novamente, para confirmação.'
+                                              '</small>'
+                                              '</span>')
 
 
 

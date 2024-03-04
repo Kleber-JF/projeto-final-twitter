@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="col-md-6 offset-md-3">
-        <h1>Register</h1>
+        <div class="alert alert-danger" role="alert">
+            ATENÇÃO! ESSE SITE É SÓ UM TESTE, NÃO UTILIZE INFORMAÇÕES PESSOAIS REAIS!!!
+        </div>
+        <h1>Registrar novo usuário</h1>
         <br />
         <form method=POST action="">
             {% csrf_token %}
             {{ form.as_p }}
             <br />
-            <button type="submit" class="btn btn-secondary">Register</button>
+            <button type="submit" class="btn btn-secondary">Registrar</button>
         </form>
     </div>
 
